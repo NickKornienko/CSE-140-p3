@@ -38,7 +38,11 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.iters = iters
         self.values = {}  # A dictionary which holds the q-values for each state.
 
-        # Compute the values here.
+        for iter in range(iters):
+            states = mdp.MarkovDecisionProcess.getStates()
+
+
+        
         raise NotImplementedError()
 
     def getValue(self, state):
@@ -47,7 +51,21 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
 
         return self.values.get(state, 0.0)
+    
+    def getPolicy(self, state):
+        """
+        returns the best action according to computed values
+        """
 
+        return self.values.get(state, 0.0)
+
+    def getQValue(self, state):
+        """
+        returns the q-value of the (state, action) pair.
+        """
+
+        return self.values.get(state, 0.0)
+    
     def getAction(self, state):
         """
         Returns the policy at the state (no exploration).
