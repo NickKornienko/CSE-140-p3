@@ -57,12 +57,20 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         return self.values.get(state, 0.0)
 
-    def getQValue(self, state):
+    def getQValue(self, state, action):
         """
         returns the q-value of the (state, action) pair.
+
+        Q = sum(probabilty(s,a) * (reward(s, a, s') + discountRate * values[s']))
+
         """
 
-        return self.values.get(state, 0.0)
+        Q = 0
+        for transitionState, probabilty in self.mdp.getTransitionStatesAndProbs(state, action):
+            Q += probabilty * (self.mdp.getReward(state, action, transitionState) +
+                               (self.discountRate * self.values[transitionState]))
+
+        return Q
 
     def getAction(self, state):
         """
