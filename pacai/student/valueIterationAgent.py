@@ -1,3 +1,4 @@
+from cmath import inf
 from pacai.agents.learning.value import ValueEstimationAgent
 
 
@@ -55,14 +56,25 @@ class ValueIterationAgent(ValueEstimationAgent):
         returns the best action according to computed values
         """
 
-        return self.values.get(state, 0.0)
+        # return none if so no-legal actions remain
+        if self.mdp.isTerminal(state):
+            return None
+
+        bestValue = -inf
+        bestAction = None
+
+        for action in self.mdp.getPossibleActions(state):
+            value = self.getQValue(state, action)
+            if bestValue < value:
+                bestValue = value
+                bestAction = action
+        return bestAction
 
     def getQValue(self, state, action):
         """
         returns the q-value of the (state, action) pair.
 
         Q = sum(probabilty(s,a) * (reward(s, a, s') + discountRate * values[s']))
-
         """
 
         Q = 0
