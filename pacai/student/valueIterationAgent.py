@@ -1,5 +1,6 @@
 from pacai.agents.learning.value import ValueEstimationAgent
 
+
 class ValueIterationAgent(ValueEstimationAgent):
     """
     A value iteration agent.
@@ -30,19 +31,16 @@ class ValueIterationAgent(ValueEstimationAgent):
     you should return None.
     """
 
-    def __init__(self, index, mdp, discountRate = 0.9, iters = 100, **kwargs):
+    def __init__(self, index, mdp, discountRate=0.9, iters=100, **kwargs):
         super().__init__(index, **kwargs)
 
         self.mdp = mdp
         self.discountRate = discountRate
         self.iters = iters
-        self.values = {}  # A dictionary which holds the q-values for each state.
 
-        for iter in range(iters):
-            states = mdp.MarkovDecisionProcess.getStates()
+        # A dictionary which holds the q-values for each state.
+        self.values = {}
 
-
-        
         raise NotImplementedError()
 
     def getValue(self, state):
@@ -51,7 +49,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
 
         return self.values.get(state, 0.0)
-    
+
     def getPolicy(self, state):
         """
         returns the best action according to computed values
@@ -65,7 +63,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
 
         return self.values.get(state, 0.0)
-    
+
     def getAction(self, state):
         """
         Returns the policy at the state (no exploration).
