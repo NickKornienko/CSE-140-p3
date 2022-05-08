@@ -42,7 +42,12 @@ class ValueIterationAgent(ValueEstimationAgent):
         # A dictionary which holds the q-values for each state.
         self.values = {}
 
-        raise NotImplementedError()
+        for _ in range(iters):
+            values = dict(self.values)  # dc
+            for state in self.mdp.getStates():
+                bestAction = self.getPolicy(state)
+                values[state] = self.getQValue(state, bestAction)
+            self.values = values
 
     def getValue(self, state):
         """
@@ -57,12 +62,14 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
 
         # return none if so no-legal actions remain
+
         if self.mdp.isTerminal(state):
             return None
 
         bestValue = -inf
         bestAction = None
 
+        # return action that has the highest q-value
         for action in self.mdp.getPossibleActions(state):
             value = self.getQValue(state, action)
             if bestValue < value:
@@ -73,10 +80,9 @@ class ValueIterationAgent(ValueEstimationAgent):
     def getQValue(self, state, action):
         """
         returns the q-value of the (state, action) pair.
-
-        Q = sum(probabilty(s,a) * (reward(s, a, s') + discountRate * values[s']))
         """
 
+        # Q = sum(probabilty(s,a) * (reward(s, a, s') + discountRate * values[s']))
         Q = 0
         for transitionState, probabilty in self.mdp.getTransitionStatesAndProbs(state, action):
             Q += probabilty * (self.mdp.getReward(state, action, transitionState) +
