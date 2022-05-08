@@ -90,8 +90,9 @@ class ValueIterationAgent(ValueEstimationAgent):
         # Q = sum(probabilty(s,a) * (reward(s, a, s') + discountRate * values[s']))
         Q = 0
         for transitionState, probabilty in self.mdp.getTransitionStatesAndProbs(state, action):
-            Q += probabilty * (self.mdp.getReward(state, action, transitionState) +
-                               (self.discountRate * self.values[transitionState]))
+            reward = self.mdp.getReward(state, action, transitionState)
+            Q += probabilty * \
+                (reward + (self.discountRate * self.values[transitionState]))
 
         return Q
 
