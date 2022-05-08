@@ -40,12 +40,20 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.iters = iters
 
         # A dictionary which holds the q-values for each state.
+        # Each state starts with value 0.0
         self.values = {}
+        for state in self.mdp.getStates():
+            self.values[state] = 0.0
+
+        # run iters iterations, setting the q-value for each state
+        # for every iteration
 
         for _ in range(iters):
-            values = dict(self.values)  # dc
+            values = dict(self.values)
             for state in self.mdp.getStates():
                 bestAction = self.getPolicy(state)
+                if not bestAction:  # terminal state, value stays 0.0
+                    continue
                 values[state] = self.getQValue(state, bestAction)
             self.values = values
 
@@ -61,8 +69,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         returns the best action according to computed values
         """
 
-        # return none if so no-legal actions remain
-
+        # return none if so no legal actions remain
         if self.mdp.isTerminal(state):
             return None
 
