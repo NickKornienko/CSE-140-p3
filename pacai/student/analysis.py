@@ -9,70 +9,101 @@ return NOT_POSSIBLE
 
 NOT_POSSIBLE = None
 
+
 def question2():
     """
-    [Enter a description of what you did here.]
+    To get the agent to cross the bridge noise was lowered to 0. 
+    The agent will avoid crossing the bridge with higher noise as it has
+    a large probabilty of failure due to going north/south. Lower values such as
+    0.01 also will often work as the probabilty of unitended behaviour is low.
     """
 
     answerDiscount = 0.9
-    answerNoise = 0.2
+    answerNoise = 0.0
 
     return answerDiscount, answerNoise
 
+
 def question3a():
     """
-    [Enter a description of what you did here.]
+    To get the agent to perfer the close exit living reward should be at a
+    minimum to get the agent to not seek further exits. 
+    
+    Discount should also be at a minimum to lower values enough
+    that the agent doesn't seek further rewards.
+
+    Noise should be at a minimum for the agent to risk the cliff as
+    there will be minimal risk of going south due to unintended behaviour
     """
 
-    answerDiscount = 0.9
-    answerNoise = 0.2
+    answerDiscount = 0.1
+    answerNoise = 0.0
     answerLivingReward = 0.0
 
     return answerDiscount, answerNoise, answerLivingReward
+
 
 def question3b():
     """
-    [Enter a description of what you did here.]
+    Answer discount and living reward need to be raised slightly to allow
+    the agent to take the longer path and avoid the cliff, 
+    but not so much that it goes for the futher exit.
+
+    Noise should be increased to make the longer path outweigh risking the cliff
     """
 
-    answerDiscount = 0.9
+    answerDiscount = 0.3
     answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerLivingReward = 0.2
 
     return answerDiscount, answerNoise, answerLivingReward
+
 
 def question3c():
     """
-    [Enter a description of what you did here.]
+    Discount and living reward should be raised enough for the agent to perfer
+    the distant exit
+
+    Noise should be low to minimize the risk of the cliff
     """
 
-    answerDiscount = 0.9
-    answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerDiscount = 0.3
+    answerNoise = 0.0
+    answerLivingReward = 0.2
 
     return answerDiscount, answerNoise, answerLivingReward
+
 
 def question3d():
     """
-    [Enter a description of what you did here.]
+    Discount should be raised to ensure the distant exit is perferred.
+
+    Noise should be raised so the agent take the longer, safer route
     """
 
     answerDiscount = 0.9
     answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerLivingReward = 0.1
 
     return answerDiscount, answerNoise, answerLivingReward
+
 
 def question3e():
     """
-    [Enter a description of what you did here.]
+    Discount should be zero so the agent doesn't attempt to go for the exits
+
+    Noise should also be limited to avoid the change of the agent accidently
+    reaching an exit.
+
+    Living reward should be non-zero so the agent is motivated to
     """
 
-    answerDiscount = 0.9
-    answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerDiscount = 0.0
+    answerNoise = 0.0
+    answerLivingReward = 1.0
 
     return answerDiscount, answerNoise, answerLivingReward
+
 
 def question6():
     """
@@ -83,6 +114,7 @@ def question6():
     answerLearningRate = 0.5
 
     return answerEpsilon, answerLearningRate
+
 
 if __name__ == '__main__':
     questions = [
