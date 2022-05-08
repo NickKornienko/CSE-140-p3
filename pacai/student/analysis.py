@@ -12,7 +12,7 @@ NOT_POSSIBLE = None
 
 def question2():
     """
-    To get the agent to cross the bridge noise was lowered to 0. 
+    To get the agent to cross the bridge noise was lowered to 0.
     The agent will avoid crossing the bridge with higher noise as it has
     a large probabilty of failure due to going north/south. Lower values such as
     0.01 also will often work as the probabilty of unitended behaviour is low.
@@ -27,13 +27,13 @@ def question2():
 def question3a():
     """
     To get the agent to perfer the close exit living reward should be at a
-    minimum to get the agent to not seek further exits. 
-    
+    minimum to get the agent to not seek further exits.
+
     Discount should also be at a minimum to lower values enough
     that the agent doesn't seek further rewards.
 
     Noise should be at a minimum for the agent to risk the cliff as
-    there will be minimal risk of going south due to unintended behaviour
+    there will be minimal risk of going south due to unintended behaviour.
     """
 
     answerDiscount = 0.1
@@ -46,10 +46,10 @@ def question3a():
 def question3b():
     """
     Answer discount and living reward need to be raised slightly to allow
-    the agent to take the longer path and avoid the cliff, 
+    the agent to take the longer path and avoid the cliff,
     but not so much that it goes for the futher exit.
 
-    Noise should be increased to make the longer path outweigh risking the cliff
+    Noise should be increased to make the longer path outweigh risking the cliff.
     """
 
     answerDiscount = 0.3
