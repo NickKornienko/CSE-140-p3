@@ -45,9 +45,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         for state in self.mdp.getStates():
             self.values[state] = 0.0
 
-        # run iters iterations, setting the q-value for each state
-        # for every iteration
-
+        # Set the q-value for each state over iters iterations
         for _ in range(iters):
             values = dict(self.values)
             for state in self.mdp.getStates():
