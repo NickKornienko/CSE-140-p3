@@ -182,7 +182,51 @@ class ApproximateQAgent(PacmanQAgent):
         super().__init__(index, **kwargs)
         self.featExtractor = reflection.qualifiedImport(extractor)
 
-        # You might want to initialize weights here.
+        # A dictionary which holds the weights.
+        self.weights = {}
+
+    def getQValue(self, state, action):
+        """
+        Get the Q-Value for a `pacai.core.gamestate.AbstractGameState`
+        and `pacai.core.directions.Directions`.
+        Should return 0.0 if the (state, action) pair has never been seen.
+        """
+
+        if action is None:
+            return 0.0
+
+        features = self.featExtractor.getFeatures(self, state, action)
+
+        # Return q-value for each feature key, set weight to 0 on first pass
+        Q = 0
+        for feature in features:
+            if not feature in self.weights:
+                self.weights[feature] = 0.0
+            Q += features[feature] * self.weights[feature]
+        return Q
+
+    def update(self, state, action, nextState, reward):
+        """
+        This class will call this function after observing a transition and reward.
+        """
+
+        # correction = (reward + discountRate * value(s', a')) - Q
+        # weight = weight + (alpha * correction * feature)
+
+        alpha = ReinforcementAgent.getAlpha(self)
+        discountRate = ReinforcementAgent.getDiscountRate(self)
+
+        correction = (reward + (discountRate * self.getValue(nextState))
+                      ) - self.getQValue(state, action)
+
+        features = self.featExtractor.getFeatures(self, state, action)
+
+        # Set weight for each feature key
+        for feature in features:
+            self.weights[feature] = self.weights[feature] + \
+                (alpha * correction * features[feature])
+
+        return None
 
     def final(self, state):
         """
@@ -192,8 +236,4 @@ class ApproximateQAgent(PacmanQAgent):
         # Call the super-class final method.
         super().final(state)
 
-        # Did we finish training?
-        if self.episodesSoFar == self.numTraining:
-            # You might want to print your weights here for debugging.
-            # *** Your Code Here ***
-            raise NotImplementedError()
+        return None
