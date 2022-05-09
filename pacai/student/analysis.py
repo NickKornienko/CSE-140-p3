@@ -107,13 +107,18 @@ def question3e():
 
 def question6():
     """
-    [Enter a description of what you did here.]
+    Its not possible to consisitently learn an optimal policy with 50 iterations
+    on bridge grid. Epsilon needs to be high enough that the agent explores
+    more states in trying to reach the goal, but also low enough such that 
+    when a relativly optimal path is found that is does not make a mistake. 
+
+    There are 5 states it needs to traverse, meaning there is a 1 / (5! * epsilon)
+    chance of failure on any given run. Any meaningingfully high epsilon that
+    has a reasonable change of exploring enough states to find the optimal path
+    will have a high chance of failure due to randomness.
     """
 
-    answerEpsilon = 0.3
-    answerLearningRate = 0.5
-
-    return answerEpsilon, answerLearningRate
+    return NOT_POSSIBLE
 
 
 if __name__ == '__main__':

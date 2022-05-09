@@ -1,6 +1,7 @@
 from cmath import inf
+from random import choice
 from pacai.agents.learning.reinforcement import ReinforcementAgent
-from pacai.util import reflection
+from pacai.util import reflection, probability
 
 
 class QLearningAgent(ReinforcementAgent):
@@ -106,9 +107,11 @@ class QLearningAgent(ReinforcementAgent):
 
     def getAction(self, state):
         """
-        Returns the policy at the state (no exploration).
+        Returns the epsilon-greedy action selection
         """
 
+        if probability.flipCoin(ReinforcementAgent.getEpsilon(self)):
+            return choice(ReinforcementAgent.getLegalActions(self, state))
         return self.getPolicy(state)
 
     def update(self, state, action, nextState, reward):
