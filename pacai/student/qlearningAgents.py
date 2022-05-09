@@ -200,7 +200,7 @@ class ApproximateQAgent(PacmanQAgent):
         # Return q-value for each feature key, set weight to 0 on first pass
         Q = 0
         for feature in features:
-            if not feature in self.weights:
+            if feature not in self.weights:
                 self.weights[feature] = 0.0
             Q += features[feature] * self.weights[feature]
         return Q

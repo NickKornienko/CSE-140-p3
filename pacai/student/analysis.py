@@ -109,8 +109,8 @@ def question6():
     """
     Its not possible to consisitently learn an optimal policy with 50 iterations
     on bridge grid. Epsilon needs to be high enough that the agent explores
-    more states in trying to reach the goal, but also low enough such that 
-    when a relativly optimal path is found that is does not make a mistake. 
+    more states in trying to reach the goal, but also low enough such that
+    when a relativly optimal path is found that is does not make a mistake.
 
     There are 5 states it needs to traverse, meaning there is a 1 / (5! * epsilon)
     chance of failure on any given run. Any meaningingfully high epsilon that
