@@ -1,5 +1,7 @@
+from cmath import inf
 from pacai.agents.learning.reinforcement import ReinforcementAgent
 from pacai.util import reflection
+
 
 class QLearningAgent(ReinforcementAgent):
     """
@@ -45,7 +47,8 @@ class QLearningAgent(ReinforcementAgent):
     def __init__(self, index, **kwargs):
         super().__init__(index, **kwargs)
 
-        # You can initialize Q-values here.
+        # A dictionary which holds the q-values for each state.
+        self.values = {}
 
     def getQValue(self, state, action):
         """
@@ -54,7 +57,13 @@ class QLearningAgent(ReinforcementAgent):
         Should return 0.0 if the (state, action) pair has never been seen.
         """
 
-        return 0.0
+        if action is None:
+            return 0.0
+
+        if not (state, action) in self.values:
+            self.values[state, action] = 0.0
+
+        return self.values[state, action]
 
     def getValue(self, state):
         """
@@ -69,7 +78,7 @@ class QLearningAgent(ReinforcementAgent):
         Whereas this method returns the value of the best action.
         """
 
-        return 0.0
+        return self.getQValue(state, self.getPolicy(state))
 
     def getPolicy(self, state):
         """
@@ -84,14 +93,48 @@ class QLearningAgent(ReinforcementAgent):
         Whereas this method returns the best action itself.
         """
 
+        bestValue = -inf
+        bestAction = None
+
+        # return action that has the highest q-value
+        for action in ReinforcementAgent.getLegalActions(self, state):
+            value = self.getQValue(state, action)
+            if bestValue < value:
+                bestValue = value
+                bestAction = action
+        return bestAction
+
+    def getAction(self, state):
+        """
+        Returns the policy at the state (no exploration).
+        """
+
+        return self.getPolicy(state)
+
+    def update(self, state, action, nextState, reward):
+        """
+        This class will call this function after observing a transition and reward.
+        """
+
+        # sample = reward + discount * value(s', a')
+        # Q(s,a) = (1-a) * Q(s,a) + a * sample
+
+        alpha = ReinforcementAgent.getAlpha(self)
+        discountRate = ReinforcementAgent.getDiscountRate(self)
+
+        sample = reward + (discountRate * self.getValue(nextState))
+        self.values[state, action] = (1 - alpha) * \
+            self.getQValue(state, action) + (alpha * sample)
+
         return None
+
 
 class PacmanQAgent(QLearningAgent):
     """
     Exactly the same as `QLearningAgent`, but with different default parameters.
     """
 
-    def __init__(self, index, epsilon = 0.05, gamma = 0.8, alpha = 0.2, numTraining = 0, **kwargs):
+    def __init__(self, index, epsilon=0.05, gamma=0.8, alpha=0.2, numTraining=0, **kwargs):
         kwargs['epsilon'] = epsilon
         kwargs['gamma'] = gamma
         kwargs['alpha'] = alpha
@@ -109,6 +152,7 @@ class PacmanQAgent(QLearningAgent):
         self.doAction(state, action)
 
         return action
+
 
 class ApproximateQAgent(PacmanQAgent):
     """
@@ -131,7 +175,7 @@ class ApproximateQAgent(PacmanQAgent):
     """
 
     def __init__(self, index,
-            extractor = 'pacai.core.featureExtractors.IdentityExtractor', **kwargs):
+                 extractor='pacai.core.featureExtractors.IdentityExtractor', **kwargs):
         super().__init__(index, **kwargs)
         self.featExtractor = reflection.qualifiedImport(extractor)
 
